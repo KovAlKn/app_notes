@@ -145,10 +145,32 @@ def main():
 
 
         elif command == '5':
-            pass
+            note_to_change = input("Укажите ID заметки, которую требуетмя отредактировать: ")
+            list_of_notes = read_file(file_name)
+            for note in list_of_notes:
+                if (note['ID']==note_to_change):
+                    note['Topic'] = input("Укажите тему заметки: ")
+                    note['Note'] = input("Введите текст заметки: ")
+                    note['Date'] = str(datetime.now().strftime("%d.%m.%Y %H:%M:%S"))
+
+            with open(file_name, 'w', encoding='utf-8', newline='') as csvfile:
+                f_writer = DictWriter(csvfile, fieldnames=['ID', 'Topic', 'Note', 'Date'])
+                f_writer.writeheader()
+                for row in list_of_notes:
+                    f_writer.writerow(row)
 
         elif command == '6':
-            pass
+            note_to_del = input("Укажите ID заметки, которую требуетмя удалить: ")
+            list_of_notes = read_file(file_name)
+            for note in list_of_notes:
+                if(note['ID']==note_to_del):
+                    list_of_notes.remove(note)
+                    print(f"Заметка с ID {note_to_del} удалена")
+            with open(file_name, 'w', encoding='utf-8', newline='') as csvfile:
+                f_writer = DictWriter(csvfile, fieldnames=['ID', 'Topic', 'Note', 'Date'])
+                f_writer.writeheader()
+                for row in list_of_notes:
+                    f_writer.writerow(row)
 
 
 main()
